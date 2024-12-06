@@ -6,6 +6,9 @@ from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
+from django.shortcuts import render, redirect
+from accounts.models import UserProfile
+
 # Verification email
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -146,12 +149,21 @@ def activate(request, uidb64, token):
 
 @login_required(login_url='login')
 def dashboard(request):
-    orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
-    orders_count = orders.count()
+    # orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
+    # orders_count = orders.count()
 
-    userprofile = UserProfile.objects.get(user_id=request.user.id)
+    # userprofile = UserProfile.objects.get(user_id=request.user.id)
+    # context = {
+    #     'orders_count': orders_count,
+    #     'userprofile': userprofile,
+    # }
+    # return render(request, 'accounts/dashboard.html', context)
+    try:
+        userprofile = request.user.userprofile  # This uses the reverse relation from the OneToOneField
+    except UserProfile.DoesNotExist:
+        userprofile = UserProfile.objects.create(user=request.user)  # Create one if it doesn't exist
+
     context = {
-        'orders_count': orders_count,
         'userprofile': userprofile,
     }
     return render(request, 'accounts/dashboard.html', context)
