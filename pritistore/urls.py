@@ -18,6 +18,8 @@ from django.urls import path, include
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
+from django.shortcuts import render
+from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,6 +27,7 @@ urlpatterns = [
     path('store/', include('store.urls')),
     path('cart/', include('carts.urls')),  
     path('accounts/', include('accounts.urls')), 
+    path('', lambda request: render(request, 'index.html')), 
 
 
     # ORDERS
