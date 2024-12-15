@@ -152,6 +152,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'   # For collectstatic output
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'pritistore/static')]  # Static files in 'pritistore/static'
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files configuration
 # MEDIA_URL = '/media/'
