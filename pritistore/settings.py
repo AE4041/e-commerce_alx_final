@@ -15,7 +15,9 @@ from pathlib import Path
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+#BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -59,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
 ]
 
 ROOT_URLCONF = 'pritistore.urls'  # Updated project name
@@ -66,7 +70,7 @@ ROOT_URLCONF = 'pritistore.urls'  # Updated project name
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -131,17 +135,30 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
+# STATIC_URL = '/static/'
+# #STATIC_ROOT = BASE_DIR / 'static'
+# STATIC_ROOT = os.path.join(BASE_DIR, "/static")
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'pritistore/static',  # Updated project name
+# ]
+# # STATICFILES_DIRS = [os.path.join(BASE_DIR, "pritistore/static")]
+# STATIC_URL = '/static/'
+# #STATIC_ROOT = BASE_DIR / 'staticfiles'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = [BASE_DIR / 'static']  # Add this line if your static files are in 'templates'
+
+
 STATIC_URL = '/static/'
-#STATIC_ROOT = BASE_DIR / 'static'
-STATIC_ROOT = os.path.join(BASE_DIR, "/static")
-STATICFILES_DIRS = [
-    BASE_DIR / 'pritistore/static',  # Updated project name
-]
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, "pritistore/static")]
+STATIC_ROOT = BASE_DIR / 'static'   # For collectstatic output
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'pritistore/static')]  # Static files in 'pritistore/static'
+
 
 # Media files configuration
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Media files directory
+
 
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
